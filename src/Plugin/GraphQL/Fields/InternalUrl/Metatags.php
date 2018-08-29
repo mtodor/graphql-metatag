@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "url_metatags",
  *   name = "metatags",
  *   type = "[Metatag]",
+ *   description = @Translation("Loads metatags for the URL."),
  *   parents = {"InternalUrl", "EntityCanonicalUrl"}
  * )
  */
@@ -72,8 +73,11 @@ class Metatags extends FieldPluginBase implements ContainerFactoryPluginInterfac
       $resolve = $this->subRequestBuffer->add($value, function () {
         $tags = metatag_get_tags_from_route();
         $tags = NestedArray::getValue($tags, ['#attached', 'html_head']) ?: [];
-        $tags = array_filter($tags, function($tag) {
-          return is_array($tag) && in_array(NestedArray::getValue($tag, [0, '#tag']), ['meta', 'link']);
+
+        // TODO: Filter non schema ones.
+        $tags = array_filter($tags, function ($tag) {
+          return is_array($tag) &&
+            !NestedArray::getValue($tag, [0, '#attributes', 'schema_metatag']);
         });
 
         return array_map('reset', $tags);
@@ -81,7 +85,7 @@ class Metatags extends FieldPluginBase implements ContainerFactoryPluginInterfac
 
       return function ($value, array $args, ResolveContext $context, ResolveInfo $info) use ($resolve) {
         $tags = $resolve();
-        foreach ($tags as $tag) {
+        foreach ($tags->getValue() as $tag) {
           yield $tag;
         }
       };

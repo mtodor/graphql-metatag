@@ -2,6 +2,7 @@
 
 namespace Drupal\graphql_metatag\Plugin\GraphQL\Fields\Entity;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -17,6 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "entity_metatags",
  *   name = "entityMetatags",
  *   type = "[Metatag]",
+ *   description = @Translation("Loads metatags for the entity."),
  *   parents = {"Entity"}
  * )
  */
@@ -69,7 +71,13 @@ class EntityMetatags extends FieldPluginBase implements ContainerFactoryPluginIn
   protected function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
     if ($value instanceof ContentEntityInterface) {
       $tags = $this->metatagManager->tagsFromEntityWithDefaults($value);
+
+      // Filter non schema metatags, because schema metatags are processed in
+      // EntitySchemaMetatags class.
       $elements = $this->metatagManager->generateRawElements($tags, $value);
+      $elements = array_filter($elements, function ($metatag_object) {
+        return !NestedArray::getValue($metatag_object, ['#attributes', 'schema_metatag']);
+      });
 
       foreach ($elements as $element) {
         yield $element;

@@ -12,7 +12,7 @@ use GraphQL\Type\Definition\ResolveInfo;
  *   id = "metatag_key",
  *   name = "key",
  *   type = "String",
- *   parents = {"Metatag"}
+ *   parents = {"Metatag", "SchemaMetatag"}
  * )
  */
 class Key extends FieldPluginBase {
