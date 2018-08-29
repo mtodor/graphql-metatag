@@ -10,7 +10,7 @@ use GraphQL\Type\Definition\ResolveInfo;
  * @GraphQLType(
  *   id = "schema_meta",
  *   name = "SchemaMeta",
- *   description = @Translation("Container for schema metatag properties.")
+ *   description = @Translation("Container for schema metatag properties."),
  *   interfaces = {"SchemaMetatag"}
  * )
  */
