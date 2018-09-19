@@ -74,7 +74,6 @@ class Metatags extends FieldPluginBase implements ContainerFactoryPluginInterfac
         $tags = metatag_get_tags_from_route();
         $tags = NestedArray::getValue($tags, ['#attached', 'html_head']) ?: [];
 
-        // TODO: Filter non schema ones.
         $tags = array_filter($tags, function ($tag) {
           return is_array($tag) &&
             !NestedArray::getValue($tag, [0, '#attributes', 'schema_metatag']);
