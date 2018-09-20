@@ -9,6 +9,7 @@ use GraphQL\Type\Definition\ResolveInfo;
 
 /**
  * @GraphQLField(
+ *   secure = true,
  *   id = "url_schema_metatags",
  *   name = "schema_metatags",
  *   type = "[SchemaMetatag]",

@@ -8,6 +8,7 @@ use GraphQL\Type\Definition\ResolveInfo;
 
 /**
  * @GraphQLField(
+ *   secure = true,
  *   id = "metatag_content",
  *   name = "content",
  *   type = "String",
