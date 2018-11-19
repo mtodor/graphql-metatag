@@ -22,7 +22,10 @@ class Key extends FieldPluginBase {
    */
   protected function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
     if (isset($value['#tag']) && $value['#tag'] === 'meta') {
-      yield isset($value['#attributes']['property']) ? $value['#attributes']['property'] : $value['#attributes']['name'];
+      yield isset($value['#attributes']['property']) ? $value['#attributes']['property'] :
+        ((isset($value['#attributes']['http-equiv'])) ? $value['#attributes']['http-equiv'] :
+          ((isset($value['#attributes']['itemprop'])) ? $value['#attributes']['itemprop'] : $value['#attributes']['name'])
+        );
     }
     else if (isset($value['#tag']) && $value['#tag'] === 'link') {
       yield $value['#attributes']['rel'];

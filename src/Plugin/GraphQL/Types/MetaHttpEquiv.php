@@ -8,21 +8,19 @@ use GraphQL\Type\Definition\ResolveInfo;
 
 /**
  * @GraphQLType(
- *   id = "meta_value",
- *   name = "MetaValue",
+ *   id = "meta_http_equiv",
+ *   name = "MetaHttpEquiv",
  *   interfaces = {"Metatag"}
  * )
  */
-class MetaValue extends TypePluginBase {
+class MetaHttpEquiv extends TypePluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function applies($object, ResolveContext $context, ResolveInfo $info = NULL) {
     if (isset($object['#tag']) && $object['#tag'] === 'meta') {
-      return !array_key_exists('property', $object['#attributes'])
-        && !array_key_exists('http-equiv', $object['#attributes'])
-        && !array_key_exists('itemprop', $object['#attributes']);
+      return array_key_exists('http-equiv', $object['#attributes']);
     }
 
     return FALSE;
