@@ -27,4 +27,4 @@ class MetaItemProp extends TypePluginBase {
   }
 
 }
-AcquiaLiftMetaTags.php
+
